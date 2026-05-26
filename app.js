@@ -4,10 +4,20 @@ const port = process.env.PORT || 3001;
 
 app.get("/", (req, res) => res.type('html').send(html));
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+// New simple feature: Sum two numbers
+app.get("/api/sum", (req, res) => {
+  const a = parseFloat(req.query.a) || 0;
+  const b = parseFloat(req.query.b) || 0;
+  res.json({ result: a + b });
+});
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
+if (require.main === module) {
+  const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+  server.keepAliveTimeout = 120 * 1000;
+  server.headersTimeout = 120 * 1000;
+}
+
+module.exports = app;
 
 const html = `
 <!DOCTYPE html>
