@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-express-hello-world:$(date +%s)
+    - name: Notify on Success
+      if: success()
+      run: echo "CI Pipeline Succeeded"
+    - name: Notify on Failure
+      if: failure()
+      run: echo "CI Pipeline Failed"
